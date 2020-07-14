@@ -1,4 +1,4 @@
-package go-iwd
+package iwd
 
 const (
 	objectKnownNetwork = "net.connman.iwd.KnownNetwork"
