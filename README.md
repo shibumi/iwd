@@ -1,2 +1,3 @@
-# iwd-menu
-iwd-menu is a user-friendly menu for iwd utilizing iwd's dbus API
+# go-iwd
+
+Go dbus API bindings for the Internet Wirless Daemon "iwd".
