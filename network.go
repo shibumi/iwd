@@ -1,8 +1,9 @@
 package iwd
 
 import (
+	"encoding/hex"
+
 	dbus "github.com/godbus/dbus/v5"
-	"github.com/shibumi/go/src/encoding/hex"
 )
 
 const (
