@@ -16,6 +16,7 @@ const (
 
 // Iwd is a struct over all major iwd components
 type Iwd struct {
+	Agents        []Agent
 	Adapters      []Adapter
 	KnownNetworks []KnownNetwork
 	Networks      []Network
@@ -29,6 +30,7 @@ func New(conn *dbus.Conn) Iwd {
 	objectManager := conn.Object(objectIwd, "/")
 	objectManager.Call("org.freedesktop.DBus.ObjectManager.GetManagedObjects", 0).Store(&objects)
 	i := Iwd{
+		make([]Agent, 0),
 		make([]Adapter, 0),
 		make([]KnownNetwork, 0),
 		make([]Network, 0),

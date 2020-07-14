@@ -1,9 +1,13 @@
 package iwd
 
-import dbus "github.com/godbus/dbus/v5"
+import (
+	dbus "github.com/godbus/dbus/v5"
+	"github.com/shibumi/go/src/encoding/hex"
+)
 
 const (
-	objectNetwork = "net.connman.iwd.Network"
+	objectNetwork      = "net.connman.iwd.Network"
+	callNetworkConnect = "net.connman.iwd.Network.Connect"
 )
 
 // Network refers to the iwd network for example: /net/connman/iwd/0/4/7a65696b7561697a65696b756169646577616e67_psk
@@ -13,4 +17,17 @@ type Network struct {
 	KnownNetwork dbus.ObjectPath
 	Name         string
 	Type         string
+}
+
+// Connect establishes a connection with a network
+// Currently this only works for open networks
+func (n *Network) Connect(conn *dbus.Conn) error {
+	path := string(n.Device) + "/" + hex.EncodeToString([]byte(n.Name)) + "_" + n.Type
+	// path = /net/connman/iwd/<adapter>/<device>/<hex encoded ssid>_<network type>
+	device := conn.Object(objectIwd, dbus.ObjectPath(path))
+	call := device.Call(callNetworkConnect, 0)
+	if call.Err != nil {
+		return call.Err
+	}
+	return nil
 }
