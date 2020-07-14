@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	dbus "github.com/godbus/dbus/v5"
-	"github.com/shibumi/iwd-menu/iwd"
+	"github.com/shibumi/iwd"
 )
 
 func main() {
