@@ -1,4 +1,4 @@
-package iwd
+package go-iwd
 
 import dbus "github.com/godbus/dbus/v5"
 

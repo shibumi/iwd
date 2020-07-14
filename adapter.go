@@ -1,4 +1,4 @@
-package iwd
+package go-iwd
 
 const (
 	objectAdapter = "net.connman.iwd.Adapter"
