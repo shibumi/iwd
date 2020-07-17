@@ -37,33 +37,38 @@ func New(conn *dbus.Conn) Iwd {
 		make([]Station, 0),
 		make([]Device, 0),
 	}
-	for _, v := range objects {
-		for k, obj := range v {
-			switch k {
+	for k, v := range objects {
+		for resource, obj := range v {
+			switch resource {
 			case objectAdapter:
 				i.Adapters = append(i.Adapters, Adapter{
+					Path:  k,
 					Model: obj["Model"].Value().(string), Name: obj["Name"].Value().(string),
 					Powered: obj["Powered"].Value().(bool), SupportedModes: obj["SupportedModes"].Value().([]string),
 					Vendor: obj["Vendor"].Value().(string),
 				})
 			case objectKnownNetwork:
 				i.KnownNetworks = append(i.KnownNetworks, KnownNetwork{
+					Path:        k,
 					AutoConnect: obj["AutoConnect"].Value().(bool), Hidden: obj["Hidden"].Value().(bool),
 					LastConnectedTime: obj["LastConnectedTime"].Value().(string), Name: obj["Name"].Value().(string),
 					Type: obj["Type"].Value().(string),
 				})
 			case objectNetwork:
 				i.Networks = append(i.Networks, Network{
+					Path:      k,
 					Connected: obj["Connected"].Value().(bool), Device: obj["Device"].Value().(dbus.ObjectPath),
 					Name: obj["Name"].Value().(string), Type: obj["Type"].Value().(string),
 				})
 			case objectStation:
 				i.Stations = append(i.Stations, Station{
+					Path:             k,
 					ConnectedNetwork: obj["ConnectedNetwork"].Value().(dbus.ObjectPath), Scanning: obj["Scanning"].Value().(bool),
 					State: obj["State"].Value().(string),
 				})
 			case objectDevice:
 				i.Devices = append(i.Devices, Device{
+					Path:    k,
 					Adapter: obj["Adapter"].Value().(dbus.ObjectPath), Address: obj["Address"].Value().(string),
 					Mode: obj["Mode"].Value().(string), Name: obj["Name"].Value().(string), Powered: obj["Powered"].Value().(bool),
 				})

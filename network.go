@@ -1,8 +1,6 @@
 package iwd
 
 import (
-	"encoding/hex"
-
 	dbus "github.com/godbus/dbus/v5"
 )
 
@@ -13,6 +11,7 @@ const (
 
 // Network refers to the iwd network for example: /net/connman/iwd/0/4/7a65696b7561697a65696b756169646577616e67_psk
 type Network struct {
+	Path         dbus.ObjectPath
 	Connected    bool
 	Device       dbus.ObjectPath
 	KnownNetwork dbus.ObjectPath
@@ -23,9 +22,8 @@ type Network struct {
 // Connect establishes a connection with a network
 // Currently this only works for open networks
 func (n *Network) Connect(conn *dbus.Conn) error {
-	path := string(n.Device) + "/" + hex.EncodeToString([]byte(n.Name)) + "_" + n.Type
 	// path = /net/connman/iwd/<adapter>/<device>/<hex encoded ssid>_<network type>
-	device := conn.Object(objectIwd, dbus.ObjectPath(path))
+	device := conn.Object(objectIwd, n.Path)
 	call := device.Call(callNetworkConnect, 0)
 	if call.Err != nil {
 		return call.Err

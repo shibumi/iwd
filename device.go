@@ -8,6 +8,7 @@ const (
 
 // Device refers to the iwd network device like "wlan0" for example: /net/connman/iwd/0/4
 type Device struct {
+	Path    dbus.ObjectPath
 	Adapter dbus.ObjectPath
 	Address string
 	Mode    string

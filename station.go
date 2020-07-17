@@ -9,6 +9,7 @@ const (
 
 // Station refers to net.connman.iwd.Station
 type Station struct {
+	Path             dbus.ObjectPath
 	ConnectedNetwork dbus.ObjectPath
 	Scanning         bool
 	State            string
