@@ -41,9 +41,21 @@ func New(conn *dbus.Conn) Iwd {
 		for resource, obj := range v {
 			switch resource {
 			case objectAdapter:
+				model := ""
+				name := ""
+				if obj["Model"].Value() == nil {
+					model = ""
+				} else {
+					model = obj["Model"].Value().(string)
+				}
+				if obj["Name"].Value() == nil {
+					name = ""
+				} else {
+					name = obj["Name"].Value().(string)
+				}
 				i.Adapters = append(i.Adapters, Adapter{
 					Path:  k,
-					Model: obj["Model"].Value().(string), Name: obj["Name"].Value().(string),
+					Model: model, Name: name,
 					Powered: obj["Powered"].Value().(bool), SupportedModes: obj["SupportedModes"].Value().([]string),
 					Vendor: obj["Vendor"].Value().(string),
 				})
