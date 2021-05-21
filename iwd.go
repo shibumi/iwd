@@ -41,51 +41,53 @@ func New(conn *dbus.Conn) Iwd {
 		for resource, obj := range v {
 			switch resource {
 			case objectAdapter:
-				model := ""
-				name := ""
-				if obj["Model"].Value() == nil {
-					model = ""
-				} else {
-					model = obj["Model"].Value().(string)
-				}
-				if obj["Name"].Value() == nil {
-					name = ""
-				} else {
-					name = obj["Name"].Value().(string)
-				}
 				i.Adapters = append(i.Adapters, Adapter{
 					Path:  k,
-					Model: model, Name: name,
+					Model: asString(obj["Model"]), Name: asString(obj["Name"]),
 					Powered: obj["Powered"].Value().(bool), SupportedModes: obj["SupportedModes"].Value().([]string),
-					Vendor: obj["Vendor"].Value().(string),
+					Vendor: asString(obj["Vendor"]),
 				})
 			case objectKnownNetwork:
 				i.KnownNetworks = append(i.KnownNetworks, KnownNetwork{
 					Path:        k,
 					AutoConnect: obj["AutoConnect"].Value().(bool), Hidden: obj["Hidden"].Value().(bool),
-					LastConnectedTime: obj["LastConnectedTime"].Value().(string), Name: obj["Name"].Value().(string),
-					Type: obj["Type"].Value().(string),
+					LastConnectedTime: asString(obj["LastConnectedTime"]), Name: asString(obj["Name"]),
+					Type: asString(obj["Type"]),
 				})
 			case objectNetwork:
 				i.Networks = append(i.Networks, Network{
 					Path:      k,
-					Connected: obj["Connected"].Value().(bool), Device: obj["Device"].Value().(dbus.ObjectPath),
-					Name: obj["Name"].Value().(string), Type: obj["Type"].Value().(string),
+					Connected: obj["Connected"].Value().(bool), Device: asPath(obj["Device"]),
+					Name: asString(obj["Name"]), Type: asString(obj["Type"]),
 				})
 			case objectStation:
 				i.Stations = append(i.Stations, Station{
 					Path:             k,
-					ConnectedNetwork: obj["ConnectedNetwork"].Value().(dbus.ObjectPath), Scanning: obj["Scanning"].Value().(bool),
-					State: obj["State"].Value().(string),
+					ConnectedNetwork: asPath(obj["ConnectedNetwork"]), Scanning: obj["Scanning"].Value().(bool),
+					State: asString(obj["State"]),
 				})
 			case objectDevice:
 				i.Devices = append(i.Devices, Device{
 					Path:    k,
-					Adapter: obj["Adapter"].Value().(dbus.ObjectPath), Address: obj["Address"].Value().(string),
-					Mode: obj["Mode"].Value().(string), Name: obj["Name"].Value().(string), Powered: obj["Powered"].Value().(bool),
+					Adapter: asPath(obj["Adapter"]), Address: asString(obj["Address"]),
+					Mode: asString(obj["Mode"]), Name: asString(obj["Name"]), Powered: obj["Powered"].Value().(bool),
 				})
 			}
 		}
 	}
 	return i
+}
+
+func asString(value dbus.Variant) string {
+	if value.Value() != nil {
+		return value.Value().(string)
+	}
+	return ""
+}
+
+func asPath(value dbus.Variant) (path dbus.ObjectPath) {
+	if value.Value() != nil {
+		path = value.Value().(dbus.ObjectPath)
+	}
+	return
 }
