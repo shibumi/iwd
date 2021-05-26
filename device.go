@@ -15,3 +15,12 @@ type Device struct {
 	Name    string
 	Powered bool
 }
+
+func (d Device) ActivateAp(conn *dbus.Conn) error {
+	obj := conn.Object(objectAp, d.Path)
+	call := obj.Call(callStationScan, 0, "5g", "afoe11afoe11")
+	if call.Err != nil {
+		return call.Err
+	}
+	return nil
+}
