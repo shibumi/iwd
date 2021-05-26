@@ -78,8 +78,6 @@ func New(conn *dbus.Conn) Iwd {
 				})
 			case objectAp:
 				fmt.Printf("Access point : %v \n", obj)
-				ap := Ap{}
-				ap.Activateconn(conn)
 			default:
 				fmt.Printf("??? : %v \n", obj)
 			}
