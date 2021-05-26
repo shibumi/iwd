@@ -1,6 +1,8 @@
 package iwd
 
 import (
+	"fmt"
+
 	"github.com/godbus/dbus/v5"
 )
 
@@ -22,6 +24,7 @@ type Iwd struct {
 	Networks      []Network
 	Stations      []Station
 	Devices       []Device
+	Ap            []Ap
 }
 
 // New parses the net.connman.iwd object index and initializes an iwd object
@@ -36,6 +39,7 @@ func New(conn *dbus.Conn) Iwd {
 		make([]Network, 0),
 		make([]Station, 0),
 		make([]Device, 0),
+		make([]Ap, 0),
 	}
 	for k, v := range objects {
 		for resource, obj := range v {
@@ -72,6 +76,8 @@ func New(conn *dbus.Conn) Iwd {
 					Adapter: asPath(obj["Adapter"]), Address: asString(obj["Address"]),
 					Mode: asString(obj["Mode"]), Name: asString(obj["Name"]), Powered: obj["Powered"].Value().(bool),
 				})
+			case objectAp:
+				fmt.Printf("Access point : %v \n", obj)
 			}
 		}
 	}
