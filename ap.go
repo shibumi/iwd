@@ -4,7 +4,7 @@ import "github.com/godbus/dbus/v5"
 
 const (
 	objectAp       = "net.connman.iwd.AccessPoint"
-	callApActivate = "net.connman.iwd.Station.Start"
+	callApActivate = "net.connman.iwd.AccessPoint.StartProfile"
 )
 
 // Station refers to net.connman.iwd.Station
@@ -16,7 +16,7 @@ type Ap struct {
 
 func (a Ap) Activateconn(conn *dbus.Conn) error {
 	obj := conn.Object(objectAp, "")
-	call := obj.Call(callStationScan, 0, "5g", "afoe11afoe11")
+	call := obj.Call(callApActivate, 0, "monsuperwifi")
 	if call.Err != nil {
 		return call.Err
 	}

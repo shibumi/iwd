@@ -19,7 +19,7 @@ type Device struct {
 
 func (d Device) ActivateAp(conn *dbus.Conn) error {
 	obj := conn.Object(objectDevice, d.Path)
-	call := obj.Call(callApActivate, 0)
+	call := obj.Call(objectDeviceStart, 0)
 	if call.Err != nil {
 		return call.Err
 	}
