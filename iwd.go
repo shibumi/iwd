@@ -77,9 +77,11 @@ func New(conn *dbus.Conn) Iwd {
 					Mode: asString(obj["Mode"]), Name: asString(obj["Name"]), Powered: obj["Powered"].Value().(bool),
 				})
 			case objectAp:
+				i.Ap = append(i.Ap, Ap{
+					Path:    k,
+					Started: obj["Started"].Value().(bool),
+				})
 				fmt.Printf("Access point : %v \n", obj)
-			default:
-				fmt.Printf("??? : %v \n", obj)
 			}
 		}
 	}
