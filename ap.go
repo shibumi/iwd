@@ -14,10 +14,7 @@ type Ap struct {
 }
 
 func (a Ap) Activateconn(conn *dbus.Conn) error {
-	obj := conn.Object(objectAp, a.Path)
+	obj := conn.Object(objectIwd, a.Path)
 	call := obj.Call(callApActivate, 0, "monsuperwifi")
-	if call.Err != nil {
-		return call.Err
-	}
-	return nil
+	return call.Err
 }
