@@ -23,7 +23,7 @@ func (d Device) SetApOn(conn *dbus.Conn) error {
 	if err != nil {
 		return err
 	}
-	err = obj.SetProperty(objectDevice+".Powered", dbus.MakeVariant("on"))
+	err = obj.SetProperty(objectDevice+".Powered", dbus.MakeVariant(true))
 	if err != nil {
 		return err
 	}
