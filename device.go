@@ -3,8 +3,7 @@ package iwd
 import "github.com/godbus/dbus/v5"
 
 const (
-	objectDevice      = "net.connman.iwd.Device"
-	objectDeviceStart = "net.connman.iwd.Station.Start"
+	objectDevice = "net.connman.iwd.Device"
 )
 
 // Device refers to the iwd network device like "wlan0" for example: /net/connman/iwd/0/4
@@ -17,11 +16,11 @@ type Device struct {
 	Powered bool
 }
 
-func (d Device) ActivateAp(conn *dbus.Conn) error {
+func (d Device) SetAp(conn *dbus.Conn) error {
 	obj := conn.Object(objectDevice, d.Path)
-	call := obj.Call(objectDeviceStart, 0)
-	if call.Err != nil {
-		return call.Err
+	err := obj.SetProperty(objectDevice+".Mode", dbus.MakeVariant("ap"))
+	if err != nil {
+		return err
 	}
 	return nil
 }

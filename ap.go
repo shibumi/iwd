@@ -9,9 +9,8 @@ const (
 
 // Station refers to net.connman.iwd.Station
 type Ap struct {
-	Path             dbus.ObjectPath
-	ConnectedNetwork dbus.ObjectPath
-	State            string
+	Path    dbus.ObjectPath
+	Started bool
 }
 
 func (a Ap) Activateconn(conn *dbus.Conn) error {
