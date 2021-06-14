@@ -82,6 +82,8 @@ func New(conn *dbus.Conn) Iwd {
 					Started: obj["Started"].Value().(bool),
 				})
 				fmt.Printf("Access point : %v \n", obj)
+			default:
+				fmt.Printf("Ressource = %v", resource)
 			}
 		}
 	}
