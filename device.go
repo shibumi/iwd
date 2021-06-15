@@ -16,7 +16,7 @@ type Device struct {
 	Powered bool
 }
 
-func (d Device) SetApOn(conn *dbus.Conn) error {
+func (d Device) SetAp(conn *dbus.Conn) error {
 	obj := conn.Object(objectIwd, d.Path)
 	err := obj.SetProperty(objectDevice+".Mode", dbus.MakeVariant("ap"))
 	return err
