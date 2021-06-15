@@ -19,12 +19,17 @@ type Device struct {
 func (d Device) SetApOn(conn *dbus.Conn) error {
 	obj := conn.Object(objectIwd, d.Path)
 	err := obj.SetProperty(objectDevice+".Mode", dbus.MakeVariant("ap"))
-	if err != nil {
-		return err
-	}
-	err = obj.SetProperty(objectDevice+".Powered", dbus.MakeVariant(true))
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
+}
+
+func (d Device) SetOn(conn *dbus.Conn) error {
+	obj := conn.Object(objectIwd, d.Path)
+	err := obj.SetProperty(objectDevice+".Powered", dbus.MakeVariant(true))
+	return err
+}
+
+func (d Device) SetOff(conn *dbus.Conn) error {
+	obj := conn.Object(objectIwd, d.Path)
+	err := obj.SetProperty(objectDevice+".Powered", dbus.MakeVariant(false))
+	return err
 }
