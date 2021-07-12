@@ -1,8 +1,6 @@
 package iwd
 
 import (
-	"fmt"
-
 	"github.com/godbus/dbus/v5"
 )
 
