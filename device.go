@@ -15,3 +15,21 @@ type Device struct {
 	Name    string
 	Powered bool
 }
+
+func (d Device) SetAp(conn *dbus.Conn) error {
+	obj := conn.Object(objectIwd, d.Path)
+	err := obj.SetProperty(objectDevice+".Mode", dbus.MakeVariant("ap"))
+	return err
+}
+
+func (d Device) SetOn(conn *dbus.Conn) error {
+	obj := conn.Object(objectIwd, d.Path)
+	err := obj.SetProperty(objectDevice+".Powered", dbus.MakeVariant(true))
+	return err
+}
+
+func (d Device) SetOff(conn *dbus.Conn) error {
+	obj := conn.Object(objectIwd, d.Path)
+	err := obj.SetProperty(objectDevice+".Powered", dbus.MakeVariant(false))
+	return err
+}
