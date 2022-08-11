@@ -2,6 +2,7 @@ package iwd
 
 import (
 	dbus "github.com/godbus/dbus/v5"
+	"strconv"
 )
 
 const (
@@ -29,4 +30,32 @@ func (n *Network) Connect(conn *dbus.Conn) error {
 		return call.Err
 	}
 	return nil
+}
+
+func GetNetwork(conn *dbus.Conn, objectPath dbus.ObjectPath) (*Network, error) {
+	obj := conn.Object(objectNetwork, objectPath)
+	name, err := obj.GetProperty("Name")
+	if err != nil {
+		return nil, err
+	}
+	networkType, err := obj.GetProperty("Type")
+	if err != nil {
+		return nil, err
+	}
+	connected, err := obj.GetProperty("Connected")
+	if err != nil {
+		return nil, err
+	}
+	connectedBool, err := strconv.ParseBool(connected.String())
+	if err != nil {
+		return nil, err
+	}
+	return &Network{
+		Path:         objectPath,
+		Connected:    connectedBool,
+		Device:       "",
+		KnownNetwork: "",
+		Name:         name.String(),
+		Type:         networkType.String(),
+	}, nil
 }
